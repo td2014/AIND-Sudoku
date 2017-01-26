@@ -63,7 +63,10 @@ def grid_values(grid):
     iChar=0
     grid_dict = dict()
     for iBox in boxes:
-        grid_dict[iBox]=grid[iChar]
+        if grid[iChar]==".":
+            grid_dict[iBox]="123456789"
+        else:
+            grid_dict[iBox]=grid[iChar]
         iChar=iChar+1
         
     return grid_dict
