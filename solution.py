@@ -1,3 +1,23 @@
+#
+# Some convenient definitions brought over from utils.py
+#
+
+rows = 'ABCDEFGHI'
+cols = '123456789'
+
+boxes = cross(rows, cols)
+
+row_units = [cross(r, cols) for r in rows]
+column_units = [cross(rows, c) for c in cols]
+square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
+unitlist = row_units + column_units + square_units
+units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
+peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
+
+#
+# End of definitions from utils.py
+#
+
 assignments = []
 
 def assign_value(values, box, value):
@@ -24,7 +44,7 @@ def naked_twins(values):
 
 def cross(A, B):
     "Cross product of elements in A and elements in B."
-    pass
+    return [s+t for s in a for t in b]
 
 def grid_values(grid):
     """
@@ -36,7 +56,13 @@ def grid_values(grid):
             Keys: The boxes, e.g., 'A1'
             Values: The value in each box, e.g., '8'. If the box has no value, then the value will be '123456789'.
     """
-    pass
+    iChar=0
+    grid_dict = dict()
+    for iBox in boxes:
+        grid_dict[iBox]=grid[iChar]
+        iChar=iChar+1
+        
+    return grid_dict
 
 def display(values):
     """
