@@ -115,52 +115,63 @@ def naked_twins(values):
                         twin1 = iUnit[pairBox1]
                         twin2 = iUnit[pairBox2]
                         elimPair = values[twin1]
-###                        print("Eliminating peers of ", twin1, twin2, elimPair)
+                        print()
+                        print("iUnit = ", iUnit)
+                        print("Eliminating peers of ", twin1, twin2, elimPair)
                         
     # Process first twin                    
-                        for iPeer in peers[twin1]:
-###                            print("iPeer twin1 = ", iPeer)
+#                        for iPeer in peers[twin1]:
+                        for iPeer in iUnit:
+                            print("iPeer twin1 = ", iPeer)
+                            if iPeer==twin1:  # don't remove other twin
+                                continue
+                            
                             if iPeer==twin2:  # don't remove other twin
                                 continue
                             
-                            if elimPair==values[iPeer]:  #don't clobber match pair
-                                continue
+    #                        if elimPair==values[iPeer]:  #don't clobber match pair
+    #                            continue
     # Remove first digit                        
+                            print("elimPair[0] = ", elimPair[0])
                             if elimPair[0] in values[iPeer]:
-                                tmpVal = values[iPeer]
+                                print("eliminating Val1")
+                                tmpVal = new_values[iPeer]
                                 newVal = tmpVal.replace(elimPair[0],"")
                                 new_values[iPeer]=newVal
-    # Remove second digit                                  
+    # Remove second digit             
+                            print("elimPair[1] = ", elimPair[1])                     
                             if elimPair[1] in values[iPeer]:
-                                tmpVal = values[iPeer]
+                                print("eliminating Val2")
+                                tmpVal = new_values[iPeer]
                                 newVal = tmpVal.replace(elimPair[1],"")
                                 new_values[iPeer]=newVal
                                       
     # Process second twin                           
-                        for iPeer in peers[twin2]:
+#                        for iPeer in peers[twin2]:
+###                        for iPeer in xpeers[twin2]:
 ###                            print("iPeer twin2 = ", iPeer)
-                            if iPeer==twin1:  # don't remove other twin
-                                continue
+###                            if iPeer==twin1:  # don't remove other twin
+###                                continue
                             
-                            if elimPair==values[iPeer]:  #don't clobber match pair
-                                continue
+###                            if elimPair==values[iPeer]:  #don't clobber match pair
+###                                continue
                             
     # Remove first digit                        
-                            if elimPair[0] in values[iPeer]:
-                                tmpVal = values[iPeer]
-                                newVal = tmpVal.replace(elimPair[0],"")
-                                new_values[iPeer]=newVal
+###                            if elimPair[0] in values[iPeer]:
+###                                tmpVal = values[iPeer]
+###                                newVal = tmpVal.replace(elimPair[0],"")
+###                                new_values[iPeer]=newVal
                                       
     # Remove second digit                                  
-                            if elimPair[1] in values[iPeer]:
-                                tmpVal = values[iPeer]
-                                newVal = tmpVal.replace(elimPair[1],"")
-                                new_values[iPeer]=newVal
+###                            if elimPair[1] in values[iPeer]:
+###                                tmpVal = values[iPeer]
+###                                newVal = tmpVal.replace(elimPair[1],"")
+###                                new_values[iPeer]=newVal
     
     # 5. Continue stepping through the boxes, ignoring any box that
     # was part of a nakedtwins.
     
-    #                    break #only do one pair per unit
+                        break #only do one pair per unit
     
     # 6. Move to next unit and repeat steps 1-5.
     #
