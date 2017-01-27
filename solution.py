@@ -62,8 +62,8 @@ def naked_twins(values):
     
     print("====")
     # 1. Select a unit
-###    for iUnit in unitlist:
-    for iUnit in row_units:
+    for iUnit in unitlist:
+###    for iUnit in row_units:
         seenPair = dict()
         print("iUnit= ", iUnit)
     # 2. Step through the boxes in a unit until a box with 2 values is found.
@@ -109,11 +109,49 @@ def naked_twins(values):
     # second box, one digit at a time.
     
                     print()
-                    if multiFlag==False:
-                        print("Eliminating peers of ", iUnit[pairBox1], iUnit[pairBox2])
+                    if pairFlag==True and multiFlag==False:  #One and only one twin to lead.
+                        twin1 = iUnit[pairBox1]
+                        twin2 = iUnit[pairBox2]
+                        elimPair = values[twin1]
+                        print("Eliminating peers of ", twin1, twin2, elimPair)
+                        
+    # Process first twin                    
+                        for iPeer in peers[twin1]:
+                            print("iPeer twin1 = ", iPeer)
+                            if iPeer==twin2:  # don't remove other twin
+                                continue
+    # Remove first digit                        
+                            if elimPair[0] in values[iPeer]:
+                                tmpVal = values[iPeer]
+                                newVal = tmpVal.replace(elimPair[0],"")
+                                values[iPeer]=newVal
+    # Remove second digit                                  
+                            if elimPair[1] in values[iPeer]:
+                                tmpVal = values[iPeer]
+                                newVal = tmpVal.replace(elimPair[1],"")
+                                values[iPeer]=newVal
+                                      
+    # Process second twin                           
+                        for iPeer in peers[twin2]:
+                            print("iPeer twin2 = ", iPeer)
+                            if iPeer==twin1:  # don't remove other twin
+                                continue
+    # Remove first digit                        
+                            if elimPair[0] in values[iPeer]:
+                                tmpVal = values[iPeer]
+                                newVal = tmpVal.replace(elimPair[0],"")
+                                values[iPeer]=newVal
+                                      
+    # Remove second digit                                  
+                            if elimPair[1] in values[iPeer]:
+                                tmpVal = values[iPeer]
+                                newVal = tmpVal.replace(elimPair[1],"")
+                                values[iPeer]=newVal
     
     # 5. Continue stepping through the boxes, ignoring any box that
     # was part of a nakedtwins.
+    
+###                        break #only do one pair per unit
     
     # 6. Move to next unit and repeat steps 1-5.
     #
@@ -184,11 +222,11 @@ if __name__ == '__main__':
     values = grid_values(diag_sudoku_grid)
     
     values['A2']='23'
-    values['A3']='35'
-    values['A5']='23'
-    values['A6']='23'
-    values['A8']='35'
-    values['A9']='46'
+#    values['A3']='35'
+#    values['A5']='23'
+#    values['A6']='46'
+#    values['A8']='35'
+#    values['A9']='46'
     
 ##    display(solve(diag_sudoku_grid))
     print("Before Naked Twins:")
