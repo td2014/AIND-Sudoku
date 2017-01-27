@@ -46,9 +46,79 @@ def naked_twins(values):
     # Find all instances of naked twins
     # Eliminate the naked twins as possibilities for their peers
 
-###def cross(A, B):
-###    "Cross product of elements in A and elements in B."
-###    return [s+t for s in a for t in b]
+    # Algorithm
+    # 1. Select a unit
+    # 2. Step through the boxes until a box with 2 values is found.
+    # 2a. Mark this box.
+    # 3. Step through the remainder of the boxes and mark those boxes
+    # where a duplicate of the first pair is found.  If there is more
+    # than one box, then exit
+    # 4. Eliminate the naked pairs from the peers of the first box and
+    # second box, one digit at a time.
+    # 5. Continue stepping through the boxes, ignoring any box that
+    # was part of a nakedtwins.
+    # 6. Move to next unit and repeat steps 1-5.
+    #
+    
+    print("====")
+    # 1. Select a unit
+###    for iUnit in unitlist:
+    for iUnit in row_units:
+        seenPair = dict()
+        print("iUnit= ", iUnit)
+    # 2. Step through the boxes in a unit until a box with 2 values is found.
+    # 2a. Mark this box.
+        for iBox in range(len(iUnit)):
+            print("iBox = ", iBox)
+            iBoxID = iUnit[iBox]
+            print("iBoxID = ", iBoxID)
+            if len(values[iBoxID])==2:  #candidate naked twin
+                try: 
+                    if seenPair[values[iBoxID]]==1:  # pair seen before, skip
+                        print("Lead seen before-skipping")
+                        continue
+                except:
+                    print("Candidate Naked Twin Lead:")
+                    seenPair[values[iBoxID]]=1  # mark for next time
+                    pairVal1=values[iBoxID]
+                    pairBox1=iBox
+                    if iBox==len(iUnit)-1:  #can't search beyond end.
+                        print("Skipping pair search.")
+                        break
+    # 3. Step through the remainder of the boxes and mark those boxes
+    # where a duplicate of the first pair is found.  If there is more
+    # than one box, then exit
+                    pairFlag=False  #to prevent more than one duplicate.
+                    multiFlag=False
+                    for jBox in range(iBox+1,len(iUnit)):              
+                        print("jBox = ", jBox)
+                        jBoxID = iUnit[jBox]
+                        print("jBoxID = ", jBoxID)
+                        if len(values[jBoxID])==2:  #candidate naked twin
+                            print("Candidate Naked Twin Pair:")
+                            if pairVal1==values[jBoxID] and pairFlag==False:
+                                print("match found at: ", jBoxID)
+                                pairBox2=jBox
+                                pairFlag=True
+                            elif pairVal1==values[jBoxID] and pairFlag==True:
+                                print("more than two matching pairs - breaking out.")
+                                multiFlag=True
+                                break  # more than two pairs.
+                    
+    # 4. Eliminate the naked pairs from the peers of the first box and
+    # second box, one digit at a time.
+    
+                    print()
+                    if multiFlag==False:
+                        print("Eliminating peers of ", iUnit[pairBox1], iUnit[pairBox2])
+    
+    # 5. Continue stepping through the boxes, ignoring any box that
+    # was part of a nakedtwins.
+    
+    # 6. Move to next unit and repeat steps 1-5.
+    #
+    return values
+   
 
 def grid_values(grid):
     """
@@ -111,7 +181,21 @@ def solve(grid):
 
 if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
-    display(solve(diag_sudoku_grid))
+    values = grid_values(diag_sudoku_grid)
+    
+    values['A2']='23'
+    values['A3']='35'
+    values['A5']='23'
+    values['A6']='23'
+    values['A8']='35'
+    values['A9']='46'
+    
+##    display(solve(diag_sudoku_grid))
+    print("Before Naked Twins:")
+    display(values)
+    ntv = naked_twins(values)
+    print("After Naked Twins:")
+    display(ntv)
 
     try:
         from visualize import visualize_assignments
