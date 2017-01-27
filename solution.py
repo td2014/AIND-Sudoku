@@ -246,20 +246,29 @@ if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
     values = grid_values(diag_sudoku_grid)
     
-    values['A2']='23'
-    values['B3']='23'
+#    values['A2']='23'
+#    values['B3']='23'
 #    values['A5']='23'
 #    values['A6']='46'
 #    values['A8']='35'
 #    values['A9']='46'
     
 ##    display(solve(diag_sudoku_grid))
- ###   print("Before Naked Twins:")
+###   print("Before Naked Twins:")
 ###    display(values)
-    ntv = naked_twins(values)
-    print()
-    print("After Naked Twins:")
-    display(ntv)
+###    ntv = naked_twins(values)
+###    print()
+###    print("After Naked Twins:")
+###    display(ntv)
+
+    leftdiag=[['A1','B2','C3','D4','E5','F6','G7','H8','I9']]
+    rightdiag=[['A9','B8','C7','D6','E5','F4','G3','H2','I1']]
+
+    unitlist_d = row_units + column_units + square_units + leftdiag + rightdiag
+    units_d = dict((s, [u for u in unitlist_d if s in u]) for s in boxes)
+    peers_d = dict((s, set(sum(units_d[s],[]))-set([s])) for s in boxes)
+
+    
 
     try:
         from visualize import visualize_assignments
