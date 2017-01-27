@@ -105,7 +105,7 @@ def naked_twins(values):
                                 multiFlag=True
                                 break  # more than two pairs.
                     
-    # 4. Eliminate the naked pairs from the peers of the first box and
+    # 4.  Eliminate the naked pairs from the peers of the first box and
     # second box, one digit at a time.
     
                     print()
