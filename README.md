@@ -3,11 +3,20 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: My answer XYZ
+A: 
+The naked twins is an algorithm, similar to elimination or only_choice.  It is
+a building block that can be called repeatedly in a sequence with elimination
+and only_choice.  Naked_twins is added to the reduce_puzzle function and works
+to make the Sudoku more complete by removing values that cannot be solutions. 
+
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: My answer PRQ
+A: 
+To solve the diagonal Sudoku problem, one can add additional units that
+consist of the diagonal boxes from top left to bottom right, and also top right
+to bottom left.  These additional units are added to the other units when the solver
+is going through the constraint propagation steps without any special treatment.
 
 ### Install
 
