@@ -57,40 +57,27 @@ def naked_twins(values):
     # 3. Step through the remainder of the boxes and mark those boxes
     # where a duplicate of the first pair is found.  If there is more
     # than one box, then exit
-    # 4. Eliminate the naked pairs from the peers of the first box and
-    # second box, one digit at a time.
-    # 5. Continue stepping through the boxes, ignoring any box that
-    # was part of a nakedtwins.
-    # 6. Move to next unit and repeat steps 1-5.
+    # 4. Eliminate the naked twins from the unit peers.
+    # 5. Move to next unit and repeat steps 1-4.
     #
     
-###    print("====")
-###    print("naked twins before processing")
-###    display(values)
     new_values = values.copy()
     # 1. Select a unit
     for iUnit in unitlist:
-###    for iUnit in row_units:
-        seenPair = dict()
-###        print("iUnit= ", iUnit)
+        seenPair = dict()  # To keep track of seen before pair
     # 2. Step through the boxes in a unit until a box with 2 values is found.
     # 2a. Mark this box.
         for iBox in range(len(iUnit)):
-###            print("iBox = ", iBox)
             iBoxID = iUnit[iBox]
-###            print("iBoxID = ", iBoxID)
             if len(values[iBoxID])==2:  #candidate naked twin
                 try: 
                     if seenPair[values[iBoxID]]==1:  # pair seen before, skip
- ###                       print("Lead seen before-skipping")
                         continue
                 except:
-###                    print("Candidate Naked Twin Lead:")
                     seenPair[values[iBoxID]]=1  # mark for next time
                     pairVal1=values[iBoxID]
                     pairBox1=iBox
                     if iBox==len(iUnit)-1:  #can't search beyond end.
-###                        print("Skipping pair search.")
                         break
     # 3. Step through the remainder of the boxes and mark those boxes
     # where a duplicate of the first pair is found.  If there is more
@@ -98,71 +85,47 @@ def naked_twins(values):
                     pairFlag=False  #to prevent more than one duplicate.
                     multiFlag=False
                     for jBox in range(iBox+1,len(iUnit)):              
-###                        print("jBox = ", jBox)
                         jBoxID = iUnit[jBox]
-###                        print("jBoxID = ", jBoxID)
                         if len(values[jBoxID])==2:  #candidate naked twin
-###                            print("Candidate Naked Twin Pair:")
                             if pairVal1==values[jBoxID] and pairFlag==False:
-###                                print("match found at: ", jBoxID)
+    # Match found
                                 pairBox2=jBox
                                 pairFlag=True
                             elif pairVal1==values[jBoxID] and pairFlag==True:
-###                                print("more than two matching pairs - breaking out.")
+    # Additional matches found - exit since this cannot be a naked twin 
                                 multiFlag=True
-                                break  # more than two pairs.
+                                break  # more than two in twin pair.
                     
-    # 4.  Eliminate the naked pairs from the peers of the first box and
-    # second box, one digit at a time.
+    # 4.  Eliminate the naked pairs from the unit peers
     
                     if pairFlag==True and multiFlag==False:  #One and only one twin to lead.
                         twin1 = iUnit[pairBox1]
                         twin2 = iUnit[pairBox2]
                         elimPair = values[twin1]
-###                        print()
-###                        print("iUnit = ", iUnit)
-###                        print("Eliminating peers of ", twin1, twin2, elimPair)
                         
     # Process first twin                    
-#                        for iPeer in peers[twin1]:
                         for iPeer in iUnit:
-###                            print("iPeer twin1 = ", iPeer)
                             if iPeer==twin1:  # don't remove other twin
                                 continue
                             
                             if iPeer==twin2:  # don't remove other twin
                                 continue
                             
-    #                        if elimPair==values[iPeer]:  #don't clobber match pair
-    #                            continue
     # Remove first digit                        
-###                            print("elimPair[0] = ", elimPair[0])
                             if elimPair[0] in values[iPeer]:
-###                                print("eliminating Val1")
                                 tmpVal = new_values[iPeer]
                                 newVal = tmpVal.replace(elimPair[0],"")
                                 new_values[iPeer]=newVal
-    # Remove second digit             
-###                            print("elimPair[1] = ", elimPair[1])                     
+    # Remove second digit                                  
                             if elimPair[1] in values[iPeer]:
-###                                print("eliminating Val2")
                                 tmpVal = new_values[iPeer]
                                 newVal = tmpVal.replace(elimPair[1],"")
                                 new_values[iPeer]=newVal
-                                      
-    
-    # 5. Continue stepping through the boxes, ignoring any box that
-    # was part of a nakedtwins.
-    
+                                         
                         break #only do one pair per unit
     
-    # 6. Move to next unit and repeat steps 1-5.
-    #
-    
-###    print()
-###    print("naked twins after processing")
-###    display(new_values)
-    
+    # 5. Move to next unit and repeat steps 1-4.
+
     return new_values
    
 
@@ -252,7 +215,7 @@ def reduce_puzzle(values):
 
     # End of import from utils.py in part 10 of Sudoku lesson.
 
-# Used the search code I wrote in the lesson.    
+# Used the search code I wrote in the lesson based on provided template code.    
 def search(values):
     "Using depth-first search and propagation, create a search tree and solve the sudoku."
     
@@ -263,7 +226,7 @@ def search(values):
         
     #otherwise, maybe need to recurse
     
-    # Chose one of the unfilled square s with the fewest possibilities
+    # Chose one of the unfilled square s
     # choose squares with >1 value.
     returnVal=True
     for k,v in new_values.items():
@@ -272,7 +235,7 @@ def search(values):
             returnVal=False
             break
     
-    if returnVal==True:  #Puzzle solved base case
+    if returnVal==True:  #Puzzle solved - base case
         return new_values
     
     # Now use recursion to solve each one of the resulting sudokus, 
@@ -311,30 +274,8 @@ def solve(grid):
 
 if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
-###    values = grid_values(diag_sudoku_grid)
-    
-#    values['A2']='23'
-#    values['B3']='23'
-#    values['A5']='23'
-#    values['A6']='46'
-#    values['A8']='35'
-#    values['A9']='46'
     
     display(solve(diag_sudoku_grid))
-###   print("Before Naked Twins:")
-###    display(values)
-###    ntv = naked_twins(values)
-###    print()
-###    print("After Naked Twins:")
-###    display(ntv)
-
-###    leftdiag=[['A1','B2','C3','D4','E5','F6','G7','H8','I9']]
-###    rightdiag=[['A9','B8','C7','D6','E5','F4','G3','H2','I1']]
-
-###    unitlist_d = row_units + column_units + square_units + leftdiag + rightdiag
-###    units_d = dict((s, [u for u in unitlist_d if s in u]) for s in boxes)
-###    peers_d = dict((s, set(sum(units_d[s],[]))-set([s])) for s in boxes)
-
 
     try:
         from visualize import visualize_assignments
